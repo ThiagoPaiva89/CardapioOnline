@@ -1,4 +1,6 @@
-﻿using CardapioOnline.Repositories;
+﻿using CardapioOnline.Dto;
+using CardapioOnline.Entities;
+using CardapioOnline.Repositories;
 
 namespace CardapioOnline.Services
 {
@@ -11,9 +13,34 @@ namespace CardapioOnline.Services
             _menuRepositorie = menuRepositorie;
         }
 
-        public string PegarMenuService()
+        public void SalvarMenuItem(CreateRequest createRequest)
         {
-            return _menuRepositorie.PegarMenuRepositorie();
+            var menuItem = new MenuItens();
+
+            menuItem.Title = createRequest.Title;
+            menuItem.Description = createRequest.Description;
+            menuItem.Price = createRequest.Price;
+
+            _menuRepositorie.SalvarMenuItem(menuItem);
+        }
+       
+        public List<MenuItens> PegarMenuService()
+        {
+            return _menuRepositorie.PegarTodosMenuRepositorie();
+        }
+
+       public MenuItens PegarMenuPorId(int id)
+        {
+            return _menuRepositorie.PegarMenuPorId(id);
+        }
+
+        public void AtualizarMenuItemPorId(int id, MenuItens menuItens) 
+        {
+            var menuItemExistente = PegarMenuPorId(id);
+            if (menuItemExistente != null)
+            {
+                _menuRepositorie.AtualizarMenuItem(menuItens);
+            }
         }
 
     }
