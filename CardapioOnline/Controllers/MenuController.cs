@@ -26,9 +26,16 @@ namespace CardapioOnline.Controllers
         }
 
         [HttpGet]
-        public List<MenuItens> PegarMenuTodos()
+        public IActionResult PegarMenuTodos()
         {
-            return _menuService.PegarMenuService();
+
+            var resposta = _menuService.PegarMenuService();
+
+            if (resposta != null)
+            {
+                return Ok(resposta);
+            }
+            return BadRequest();
         }
 
         [HttpGet("id")]
@@ -38,9 +45,23 @@ namespace CardapioOnline.Controllers
         }
 
         [HttpPut]
-        public void AtualizarMenuItem(int id, [FromBody] MenuItens menuItem)
+        public IActionResult AtualizarMenuItem(int id, [FromBody] UpdateRequest item)
         {
+            if(id != item.Id)
+            {
+                return BadRequest("Item não encontrado na base de dados");
+            }
+            var menuItem = new MenuItens()
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Description = item.Description,
+                Price = item.Price,
+            };
+
             _menuService.AtualizarMenuItemPorId(id, menuItem);
+
+            return NoContent();
         }
 
     }
