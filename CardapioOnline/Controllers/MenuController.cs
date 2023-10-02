@@ -1,9 +1,7 @@
 ﻿using CardapioOnline.Dto;
 using CardapioOnline.Entities;
 using CardapioOnline.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CardapioOnline.Controllers
 {
@@ -47,7 +45,7 @@ namespace CardapioOnline.Controllers
         [HttpPut]
         public IActionResult AtualizarMenuItem(int id, [FromBody] UpdateRequest item)
         {
-            if(id != item.Id)
+            if (id != item.Id)
             {
                 return BadRequest("Item não encontrado na base de dados");
             }
@@ -62,6 +60,18 @@ namespace CardapioOnline.Controllers
             _menuService.AtualizarMenuItemPorId(id, menuItem);
 
             return NoContent();
+        }
+
+        [HttpDelete]
+        public IActionResult DeletarMenuItem(int id)
+        {
+            var menuItem = PegarMenuPorId(id);
+            if (menuItem != null)
+            {
+                _menuService.DeletarMenuItem(id);
+                return NoContent();
+            }
+            return NotFound("O item que deseja deletar não existe em nossa base de dados");
         }
 
     }

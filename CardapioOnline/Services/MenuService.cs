@@ -23,24 +23,31 @@ namespace CardapioOnline.Services
 
             _menuRepositorie.SalvarMenuItem(menuItem);
         }
-       
+
         public List<MenuItens> PegarMenuService()
         {
             return _menuRepositorie.PegarTodosMenuRepositorie();
         }
 
-       public MenuItens PegarMenuPorId(int id)
+        public MenuItens PegarMenuPorId(int id)
         {
             return _menuRepositorie.PegarMenuPorId(id);
         }
 
-        public void AtualizarMenuItemPorId(int id, MenuItens menuItens) 
+        public void AtualizarMenuItemPorId(int id, MenuItens menuItens)
         {
             var menuItemExistente = PegarMenuPorId(id);
             if (menuItemExistente != null)
             {
                 _menuRepositorie.AtualizarMenuItem(menuItens);
             }
+        }
+
+        public void DeletarMenuItem(int id)
+        {
+            var menuItem = PegarMenuPorId(id);
+            if(menuItem != null)
+                _menuRepositorie.DeletarMenuItem(id);
         }
 
     }
